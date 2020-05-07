@@ -1,0 +1,17 @@
+// $vInputBg
+/deep/.v-input{
+  padding: 0 10px;
+  background: $vInputBg;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  align-items: center;
+  .v-input__control{
+    .v-input__slot{
+      margin: 0;
+    }
+    .v-messages{
+      display: none!important;
+    }
+  }
+}

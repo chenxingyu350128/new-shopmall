@@ -1,0 +1,21 @@
+// $textFieldBg:
+/deep/.v-text-field{
+  background: $textFieldBg;
+  margin: 0;
+  padding: 0 10px;
+  .v-input__control{
+    .v-input__slot{
+      margin: 0;
+      &:before,
+      &:after{
+        border: unset;
+      }
+    }
+    .v-text-field__details{
+      display: none!important;
+    }
+    input{
+      // text-indent: 2em;
+    }
+  }
+}
