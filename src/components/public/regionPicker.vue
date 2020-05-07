@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-sheet v-model="show">
+  <v-bottom-sheet persistent v-model="isShow">
     <van-area @cancel="$emit('cancel')" @confirm="emitConfirm($event)" :area-list="areaList" />
   </v-bottom-sheet>
 </template>
@@ -15,8 +15,17 @@ export default {
     }
   },
   data: () => ({
-    areaList: regionData
+    areaList: regionData,
+    isShow: false
   }),
+  watch: {
+    show: {
+      handler (val) {
+        this.isShow = val
+      },
+      immediate: true
+    }
+  },
   methods: {
     emitConfirm (e) {
       this.$emit('confirm', e)

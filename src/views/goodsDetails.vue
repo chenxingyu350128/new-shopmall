@@ -187,19 +187,19 @@
             </v-btn>
           </div>
         </div>
-        <div v-if="goodsType === 1" class="px-4 py-2 d-flex justify-space-between">
+        <div v-if="goodsType === 1" class="px-4 py-2 mb-2 d-flex justify-space-between">
           <span>购买数量：</span>
           <div class="d-flex align-center">
             <v-icon :color="goodsNum > 1 ? 'primary' : ''" @click="decrease">mdi-minus-box-outline</v-icon>
-            <v-card class="d-flex justify-center align-center" width="20" height="20" outlined>
+            <v-card class="d-flex justify-center align-center mx-3" width="20" height="20" outlined>
               {{goodsNum}}
             </v-card>
             <v-icon :color="increaseAvailable ? 'primary' : ''" @click="increase">mdi-plus-box-outline</v-icon>
           </div>
         </div>
         <div class="d-flex">
-          <v-btn v-if="goodsType === 1" @click="addToCart" class="flexFill" color="primary" tile depressed outlined>加入购物车</v-btn>
-          <v-btn @click="addToOrder" class="flexFill" color="primary" tile depressed>立即购买</v-btn>
+          <v-btn large v-if="goodsType === 1" @click="addToCart" class="flexFill" color="primary" tile depressed outlined>加入购物车</v-btn>
+          <v-btn large @click="addToOrder" class="flexFill" color="primary" tile depressed>立即购买</v-btn>
         </div>
       </div>
     </v-bottom-sheet>
@@ -210,20 +210,20 @@
     <v-footer fixed bottom class="d-flex align-center white px-2 py-1">
       <div
         @click="$router.push('/index')"
-        class="d-flex flex-column align-center px-2 mr-2"
+        class="flex-fill d-flex flex-column align-center"
       >
         <v-icon color="primary">mdi-home-outline</v-icon>
         <span class="overline mt-1">首页</span>
       </div>
       <div
         @click="toCartPage"
-        class="d-flex flex-column align-center px-2 mr-2"
+        class="flex-fill d-flex flex-column align-center"
       >
         <v-icon color="primary"> mdi-cart-outline</v-icon>
         <span class="overline mt-1">购物车</span>
       </div>
-      <div class="flex-fill d-flex flex-row-reverse justify-space-between ">
-        <v-btn v-if="goodsType === 1" color="primary" @click="showSku=true" depressed small>加入购物车</v-btn>
+      <div class="d-flex flex-row-reverse ml-4">
+        <v-btn v-if="goodsType === 1" class="ml-4" color="primary" @click="showSku=true" depressed small>加入购物车</v-btn>
         <v-btn color="primary" @click="showSku=true" depressed small>立即购买</v-btn>
       </div>
     </v-footer>
@@ -276,36 +276,7 @@ export default {
       showPrice: 0,
       isFollowed: 0,
       carouselItems: [],
-      couponList: [
-        {
-          couponId: 1,
-          couponMoney: 150, // 优惠金额
-          couponName: '腕表设备专用', // 名称
-          couponType: 2, // 优惠劵类型 1满减  2指定商品
-          endTime: '2020-05-15 17:02:13', // 优惠劵结束时间
-          goodsId: 1,
-          instructions: '在指定时间用哦，过期作废', // 使用说明
-          quota: 50, // 发放优惠券总数
-          satisfyMoney: 500, // 条件金额
-          startTime: '2020-04-22 17:02:07', // 优惠劵开始时间
-          takeCount: 0, // 已领取优惠劵数量
-          usedCount: 0 // 已使用优惠券数量
-        },
-        {
-          couponId: 2,
-          couponMoney: 75, // 优惠金额
-          couponName: '腕表x设备专用', // 名称
-          couponType: 2, // 优惠劵类型 1满减  2指定商品
-          endTime: '2020-05-15 17:02:13', // 优惠劵结束时间
-          goodsId: 1,
-          instructions: '在指定时间用哦，过期作废', // 使用说明
-          quota: 50, // 发放优惠券总数
-          satisfyMoney: 300, // 条件金额
-          startTime: '2020-04-27 17:02:07', // 优惠劵开始时间
-          takeCount: 0, // 已领取优惠劵数量
-          usedCount: 0 // 已使用优惠券数量
-        }
-      ],
+      couponList: [],
       tabIndex: 0,
       showBase: false, // 显示popup
       eachActive: [],

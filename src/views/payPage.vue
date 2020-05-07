@@ -2,29 +2,31 @@
   <div class="page">
     <iHeader @back="showAlert=true" text="订单支付" />
     <div class="price-show d-flex">
-      <h1>￥{{totalMoney}}</h1>
+      <h1 class="text-center full-width my-12">￥{{totalMoney}}</h1>
     </div>
-    <div @click="changeWay(1)" class="d-flex justify-space-between align-center">
+    <v-divider></v-divider>
+    <div @click="changeWay(1)" class="d-flex justify-space-between align-center pa-2">
       <div class="d-flex align-center">
-        <v-icon>mdi-wechat</v-icon>
-        微信
+        <v-icon color="green accent-4">mdi-wechat</v-icon>
+        <span class="ml-2">微信</span>
       </div>
       <v-icon :color="payWay===1?'primary':'grey lighten-2'">{{payWay===1?'mdi-check-circle':'mdi-circle-outline'}}</v-icon>
     </div>
     <v-divider></v-divider>
-    <div v-if="showZFB" @click="changeWay(2)" class="d-flex justify-space-between align-center">
+    <div v-if="showZFB" @click="changeWay(2)" class="d-flex justify-space-between align-center pa-2">
       <div class="d-flex align-center">
         <v-avatar
-          size="48"
+          size="24"
         >
-          <img class="mr-2" src="@/assets/img/alipay.png">
+          <img src="@/assets/img/alipay.png">
         </v-avatar>
-        支付宝
+        <span class="ml-2">支付宝</span>
       </div>
       <v-icon :color="payWay===2?'primary':'grey lighten-2'">{{payWay===2?'mdi-check-circle':'mdi-circle-outline'}}</v-icon>
     </div>
-    <v-footer>
-      <v-btn @click="debouncePay" color="primary" depressed >确认支付</v-btn>
+    <v-divider></v-divider>
+    <v-footer class="white mt-4">
+      <v-btn block @click="debouncePay" color="primary" depressed >确认支付</v-btn>
     </v-footer>
     <v-footer fixed bottom class="white">
       <span class="footer-title primary--text caption">颐纳福服务， 送给家人的温暖</span>
@@ -37,6 +39,7 @@
 import iHeader from '@/components/public/header.vue'
 import alertBox from '@/components/public/alertBox.vue'
 export default {
+  name: 'PayPage',
   components: {
     alertBox,
     iHeader
@@ -52,7 +55,7 @@ export default {
       currentIndex: 1,
       payWay: 1,
       showZFB: true,
-      showAlert: true
+      showAlert: false
     }
   },
   computed: {
@@ -73,12 +76,13 @@ export default {
     }
     for (const x in this.orderToPay) {
       this[x] = this.orderToPay[x]
+      this.payWay = 1
     }
   },
+  created () {
+    this.debouncePay = this._.debounce(this.pay, 30)
+  },
   methods: {
-    debouncePay () {
-      this._.debounce(this.pay, 30)
-    },
     pay () {
       if (this.env === 'weChat') { // 微信环境
         const beforeWxPay = {
@@ -98,7 +102,7 @@ export default {
           if (res.data.success) {
             const payInfo = {
               obj: res.data.obj,
-              payway: this.payway
+              payWay: this.payWay
             }
             // 这里发送数据到给app处理
             // eslint-disable-next-line no-undef
@@ -166,6 +170,7 @@ export default {
       }
     },
     changeWay (e) {
+      console.log(e)
       if (this.payWay !== e) {
         this.payWay = e
       }
@@ -177,6 +182,7 @@ export default {
 <style lang="scss" scoped>
 .page{
   height: 100vh;
+  padding-top: 45px;
 }
 .footer-title{
   margin: auto;

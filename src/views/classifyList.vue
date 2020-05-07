@@ -1,6 +1,9 @@
 <!--商品分类/搜索结果-->
 <template >
-  <div class="page">
+  <div
+    class="page white"
+    :class="{'grey lighten-3': goodsList.length}"
+  >
     <iHeader
       @back="$router.push('/index')"
       @right="$router.push('/index')"
@@ -82,10 +85,10 @@
         @click="toDetail(item.goodsId)"
         :key="i"
         outlined
-        class="mb-3 d-flex"
+        class="mb-3 d-flex pa-2"
       >
         <v-avatar
-          size="75"
+          size="85"
           tile
           class="mr-2"
         >
@@ -171,28 +174,28 @@ export default {
           this.categoryList = res.data.obj
           if (!this.catId) {
             this.catId = this.categoryList[0].catId
-            this.init()
           }
+          this.getList()
         }
       })
     },
     ontabClick (i) {
       this.catId = this.categoryList[i].catId
       this.page = 1
-      this.init()
+      this.getList()
     },
     onTypeChange (i) {
       this.page = 1
-      this.init()
+      this.getList()
     },
     priceToggle () {
       this.$nextTick(() => {
         this.priceReverse = !this.priceReverse
         this.page = 1
-        this.init()
+        this.getList()
       })
     },
-    init (e) {
+    getList (e) {
       let type = this.typeIndex + 1
       if (this.typeIndex === this.typeList.length - 1 && this.priceReverse) {
         type = this.typeIndex + 2
@@ -225,7 +228,7 @@ export default {
     // 上啦加载
     loadmore () {
       this.page++
-      this.init('Yo')
+      this.getList('Yo')
     }
   }
 

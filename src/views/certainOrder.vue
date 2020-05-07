@@ -26,7 +26,7 @@
           prefix="所在地区"
           color="primary"
           readonly
-          @click.native="regionSelect"
+          @focus="regionSelect"
           placeholder="请选择所在地区"
           v-model="region"
           append-icon="mdi-chevron-right"
@@ -227,18 +227,7 @@ export default {
       sendCode: false, // 短信验证码是否已发送
       registerPhone: '', // 发送过短信验证码的手机号，防止用户再次注册且未完成注册引发的意外
       address: null,
-      memberList: [
-        {
-          member_id: 12,
-          user_name: '18966333555',
-          real_name: 'sss'
-        },
-        {
-          member_id: 58,
-          user_name: '18966333555',
-          real_name: '感受生活的好'
-        }
-      ],
+      memberList: [],
       coupon: null,
       goodsList: [],
       totalNum: 0,
@@ -406,21 +395,6 @@ export default {
         })
     },
     saveInfo () {
-      if (!this.sendCode) {
-        this.$toast('请先填写上方快捷验证所需的信息', {
-          y: 'top',
-          color: 'warning'
-        })
-        return false
-      }
-
-      if (!this.code) {
-        this.$toast('请输入短信验证码', {
-          y: 'top',
-          color: 'warning'
-        })
-        return false
-      }
       // 静默登陆前对收货地址做表单验证
       let newAddressDataInvalid = false
       const addressArr = [
@@ -459,6 +433,23 @@ export default {
         return false
       }
       // 收货地址做表单验证通过
+
+      // 对快捷验证做表单验证
+      if (!this.sendCode) {
+        this.$toast('请先填写上方快捷验证所需的信息', {
+          y: 'top',
+          color: 'warning'
+        })
+        return false
+      }
+
+      if (!this.code) {
+        this.$toast('请输入短信验证码', {
+          y: 'top',
+          color: 'warning'
+        })
+        return false
+      }
       const data = {
         receiver: this.receiver,
         phone: this.phone,
@@ -511,8 +502,13 @@ export default {
         })
         return false
       }
+      const { goodsIds, skuGroupIds } = this.orderConfirmData
+      const goodsNums = this.orderConfirmData.goodsNum
       const data = {
-        ...this.orderConfirmData,
+        goodsIds,
+        skuGroupIds,
+        goodsNums,
+        // ...this.orderConfirmData,
         consignee: this.address.receiver,
         contactNumber: this.address.phone,
         region: this.address.region,
@@ -535,7 +531,7 @@ export default {
       if (res.data.success) {
         const obj = res.data.obj
         this.$store.commit('ORDER_TO_PAY', obj)
-        this.$router.push('/payPage')
+        this.$router.push('/pay')
         console.log(obj)
       }
     },
