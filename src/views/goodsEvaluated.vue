@@ -9,7 +9,7 @@
       slider-color="primary"
       @change="onTabChange"
     >
-      <v-tab v-for="(item, i) in tabList" :key="i">
+      <v-tab v-for="(item, i) in tabList" :key="i" class="caption">
         <span>{{item.name}}</span>
         <span>{{item.count}}</span>
       </v-tab>
@@ -17,7 +17,7 @@
     </v-tabs>
     <div class="pt40">
       <v-divider></v-divider>
-      <div class="d-flex px-4 py-2 justify-space-between caption">
+      <div class="d-flex pa-2 justify-space-between caption nowrap">
         <span>好评率({{goodEvalRate}})</span>
         <span>好评({{goodEvalRate}})  中评({{averageEvalRate}})   差评({{chapEvalRate}})</span>
       </div>

@@ -51,8 +51,8 @@
         @click="toOrderList(i)"
         class="d-flex flex-column align-center pa-0"
       >
-        <v-icon color="grey lighten-1">{{item.icon}}</v-icon>
-        <div class="caption grey--text text--lighten-1">{{ item.name }}</div>
+        <v-icon color="grey darken-1">{{item.icon}}</v-icon>
+        <div class="caption grey--text text--darken-1">{{ item.name }}</div>
       </v-tab>
     </v-tabs>
     <div @click="$router.push('/addressList')" class="mb-1 d-flex justify-space-between align-center white">

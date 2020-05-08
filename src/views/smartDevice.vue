@@ -29,7 +29,7 @@
               <div>
                 <span class="ml-2">{{item.goodsSales||0}}人付款</span>
               </div>
-              <div v-if="item.goodsLabel">
+              <div v-if="item.goodsLabel" class="mb-1">
                 <v-btn class="mr-2" v-for="(itm, idx) in item.goodsLabel.split(',')" :key="idx" depressed x-small color="primary" outlined>{{itm}}</v-btn>
               </div>
               <div class="d-flex align-center justify-space-between">
