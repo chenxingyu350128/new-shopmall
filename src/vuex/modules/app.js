@@ -82,7 +82,7 @@ const mutations = {
       return
     }
     const searchList = state.searchList
-    searchList.unshift(state, res)
+    searchList.unshift(res)
     Util.setLocal('searchList', searchList)
     // console.log('res:', res)
     state.searchList = searchList

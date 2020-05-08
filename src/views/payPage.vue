@@ -28,7 +28,7 @@
     <v-footer class="white mt-4">
       <v-btn block @click="debouncePay" color="primary" depressed >确认支付</v-btn>
     </v-footer>
-    <v-footer fixed bottom class="white">
+    <v-footer fixed bottom class="white mb-2">
       <span class="footer-title primary--text caption">颐纳福服务， 送给家人的温暖</span>
     </v-footer>
     <alertBox title="是否确认取消支付？" :show="showAlert" @cancel="showAlert=false" @certain="$router.back()" />

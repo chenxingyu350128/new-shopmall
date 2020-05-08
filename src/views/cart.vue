@@ -19,7 +19,7 @@
       >
         <div class="d-flex align-center">
           <v-icon
-            dense
+            v-if="editable"
             :color="item.checked?'primary':'grey lighten-2'"
           >
             {{item.checked?'mdi-check-circle':'mdi-circle-outline'}}
@@ -27,7 +27,7 @@
         </div>
         <div class="ml-2 flex-fill d-flex">
           <v-avatar
-            size="65"
+            size="85"
             tile
             class="mr-2"
             @click.stop="$router.push({path: '/goodsDetails', query: { goodsId: item.goodsId }})"
@@ -44,7 +44,7 @@
               <div class="flex-fill d-flex align-center justify-end caption">
                 <div class="d-flex align-center">
                   <v-icon :color="item.goodsNum > 1 ? 'primary' : ''" @click="decrease(item)">mdi-minus-box-outline</v-icon>
-                  <v-card class="d-flex justify-center align-center" width="20" height="20" outlined>
+                  <v-card class="mx-2 d-flex justify-center align-center" width="20" height="20" outlined>
                     {{item.goodsNum}}
                   </v-card>
                   <v-icon :color="increaseAvailable(item.goodsNum, item.goodsStock) ? 'primary' : ''" @click="increase(item)">mdi-plus-box-outline</v-icon>
@@ -78,7 +78,7 @@
             <span class="overline text--secondary">商品已失效，请联系客服</span>
           </div>
         </div>
-        <v-icon @click="deleteInvalid(item.goodsId)">mdi-trash-can-outline</v-icon>
+        <v-icon @click="deleteInvalid($event, item.goodsId)">mdi-trash-can-outline</v-icon>
       </v-card>
     </div>
     <!-- 推荐商品 -->
@@ -308,7 +308,7 @@ export default {
         const data = {
           goodsIds: this.goodsIdList,
           skuGroupIds: this.skuGroupIdsList,
-          goodsNum: this.goodsNumList
+          goodsNums: this.goodsNumList
         }
         this.$store.commit('SET_ORDER_CONFIRM_DATA', data)
         this.$router.push('/certainOrder')
@@ -325,7 +325,7 @@ export default {
         this.findCartInvalids()
       }
     },
-    async deleteInvalid (id) {
+    async deleteInvalid (e, id) {
       const cartIds = id || this.invalidIds
       const data = {
         cartIds

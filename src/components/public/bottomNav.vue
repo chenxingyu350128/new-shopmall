@@ -82,7 +82,7 @@ export default {
     z-index: 6;
     /deep/ .v-btn__content{
       padding: 0;
-      justify-content: space-between;
+      justify-content: space-around;
     }
   }
 </style>

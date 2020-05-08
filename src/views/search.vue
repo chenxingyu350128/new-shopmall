@@ -3,7 +3,7 @@
     <iHeader
       rightText="搜索"
       @back="$router.back()"
-      @right="searchData"
+      @right="searchData()"
     >
       <template v-slot:center>
         <div>
@@ -66,7 +66,7 @@
     <!-- 搜索结果 -->
     <div v-else>
       <!-- 搜索空提示 -->
-      <none v-if="!resultList.length" :text="`抱歉，没有找到与“${placeholder}”相关的商品`" />
+      <none v-if="!resultList.length" class="mt-2" :text="`抱歉，没有找到与“${placeholder}”相关的商品`" />
       <!-- 搜索结果 -->
       <v-subheader
         class="d-flex justify-space-between"
@@ -155,36 +155,6 @@
     </div>
     <!-- 推荐商品 -->
     <recommendGoods />
-    <!-- <div class="ma-3" v-if="recommendList.length">
-      <div class="d-flex align-center py-2" >
-        <v-divider class="flex-fill"></v-divider>
-        <span class="subtitle-2 mx-3 text--secondary">推荐商品</span>
-        <v-divider class="flex-fill"></v-divider>
-      </div>
-      <v-container class="py-0">
-        <v-row no-gutter>
-          <v-col
-            v-for="(item, i) in recommendList"
-            @click="toDetail(item.goodsId)"
-            :key="i"
-            cols="6"
-            class="pa-2"
-          >
-            <v-card outlined class="d-flex flex-column align-center pa-1">
-              <img class="halfCardImage" :src="item.goodsCoverImg" :alt="item.goodsName">
-              <span class="ellipsis full-width caption px-2 my-2">{{item.goodsName}}</span>
-              <div v-if="item.goodsLabel" class="d-flex flex-wrap">
-                <v-btn class="ma-1" x-small outline color="primary" dark v-for="(itm, idx) in item.goodsLabel.split(',')" :key="idx">{{itm}}</v-btn>
-              </div>
-              <span class="primary--text full-width px-2">
-                ￥{{item.showPrice}}
-                <span>{{item.goodsSales}}人付款</span>
-              </span>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </div> -->
   </div>
 </template>
 

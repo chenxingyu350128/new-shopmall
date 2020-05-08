@@ -15,9 +15,9 @@
           class="pa-2"
         >
           <div class="isOutlined pa-1">
-            <v-img aspect-ratio="1" :src="item.goodsCoverImg"></v-img>
+            <!-- <v-img aspect-ratio="1" :src="item.goodsCoverImg"></v-img> -->
             <v-card flat class="d-flex flex-column align-center">
-              <v-img aspect-ratio="1" :src="item.goodsCoverImg"></v-img>
+              <img class="full-width" ref="vImage" :src="item.goodsCoverImg">
               <!-- <img class="halfCardImage" :src="item.goodsCoverImg" :alt="item.goodsName"> -->
               <span class="ellipsis full-width caption">{{item.goodsName}}</span>
               <div v-if="item.goodsLabel" class="d-flex flex-wrap justify-space-between">
@@ -53,6 +53,14 @@ export default {
         .then(res => {
           if (res.data.success) {
             this.recommendList = res.data.obj
+            this.$nextTick(() => {
+              // 处理1：1的图片
+              const arr = this.$refs.vImage
+              arr.forEach(re => {
+                const width = re.width
+                re.height = width
+              })
+            })
           }
         })
     },

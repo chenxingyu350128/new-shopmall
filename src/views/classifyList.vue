@@ -109,6 +109,7 @@
                 color="primary"
                 dark
                 x-small
+                class="px-1 mr-1"
               >
                 {{itm}}
               </v-btn>

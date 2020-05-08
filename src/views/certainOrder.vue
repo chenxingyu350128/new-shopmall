@@ -502,13 +502,13 @@ export default {
         })
         return false
       }
-      const { goodsIds, skuGroupIds } = this.orderConfirmData
-      const goodsNums = this.orderConfirmData.goodsNum
+      // const { goodsIds, skuGroupIds } = this.orderConfirmData
+      // const goodsNums = this.orderConfirmData.goodsNum
       const data = {
-        goodsIds,
-        skuGroupIds,
-        goodsNums,
-        // ...this.orderConfirmData,
+        // goodsIds,
+        // skuGroupIds,
+        // goodsNums,
+        ...this.orderConfirmData,
         consignee: this.address.receiver,
         contactNumber: this.address.phone,
         region: this.address.region,

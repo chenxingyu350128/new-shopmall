@@ -41,7 +41,7 @@
       ></v-text-field>
       <div class="pa-2 d-flex align-center justify-space-between">
         <span>设为默认地址：</span>
-        <v-switch v-model="isDefault" dense></v-switch>
+        <v-switch v-model="defcode" dense></v-switch>
       </div>
     </div>
     <v-footer fixed bottom class="pa-0 white">
@@ -91,6 +91,7 @@ export default {
     async getAddressDetail () {
       for (const x in this.obj) {
         this[x] = this.obj[x]
+        this.defcode = Boolean(this.defcode)
       }
     },
     onRegionConfirm (e) {
@@ -145,7 +146,7 @@ export default {
         phone: this.phone,
         region: this.region,
         address: this.address,
-        defcode: this.defcode
+        defcode: Number(this.defcode)
       }
       if (this.zipcode) {
         data.zipcode = this.zipcode

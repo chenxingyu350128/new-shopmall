@@ -147,6 +147,7 @@
         <iCoupon @click.native="takeCoupon(item, item.couponId)" v-for="(item, i) in couponList" :key="i" class="mt-2" :item="item" />
       </div>
     </v-bottom-sheet>
+    <!-- 规格选择 -->
     <v-bottom-sheet v-model="showSku">
       <div class="white">
         <div class="d-flex pa-4">
@@ -375,6 +376,7 @@ export default {
         // e.target.scrollTop
         const clientHeight = e.target.clientHeight
         const scrollTop = e.target.scrollTop
+        // 上拉一个屏幕的高度才出现
         that.showToTop = clientHeight < scrollTop
       })
     },
@@ -614,7 +616,7 @@ export default {
       const data = {
         goodsIds: this.goodsId,
         skuGroupIds: this.skuId$,
-        goodsNum: this.goodsNum
+        goodsNums: this.goodsNum
       }
       this.$store.commit('SET_ORDER_CONFIRM_DATA', data)
       this.$router.push('/certainOrder')
@@ -652,7 +654,7 @@ export default {
     position: fixed;
     bottom: 52px;
     right: 0;
-    z-index: 12;
+    z-index: 666;
   }
   /deep/ .footerDivider{
     width: 100%;

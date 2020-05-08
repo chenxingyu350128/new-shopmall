@@ -70,9 +70,9 @@
             @click="toDetail(item.goodsId)"
             :key="i"
             cols="6"
-            class="pa-1"
+            class="pa-1 d-flex flex-column"
           >
-            <v-img aspect-ratio="1" :src="item.goodsCoverImg" :alt="item.goodsName"/>
+            <img class="full-width" ref="vImage" :src="item.goodsCoverImg">
             <div class="white d-flex flex-column align-center px-2">
               <span class="ellipsis full-width caption mb-1">{{item.goodsName}}</span>
               <span class="primary--text full-width">￥{{item.showPrice}}</span>
@@ -102,12 +102,12 @@
             <div class="white d-flex pa-2">
               <v-avatar
                 tile
-                size="85"
+                size="100"
               >
                 <img :src="item.goodsCoverImg" :alt="item.goodsName">
               </v-avatar>
               <div class="flex-fill d-flex flex-column justify-space-between ml-2">
-                <span class="ellipsis full-width caption">{{item.goodsName}}</span>
+                <span class="ellipsis full-width subtitle-2 font-weight-bold">{{item.goodsName}}</span>
                 <div>
                   <span class="primary--text full-width">
                     ￥{{item.showPrice}}
@@ -123,7 +123,7 @@
                       dark
                       outlined
                       x-small
-                      class="mr-2"
+                      class="px-1 mr-1"
                     >
                       {{itm}}
                     </v-btn>
@@ -211,6 +211,12 @@ export default {
     this.init()
   },
   methods: {
+    ttt (i) {
+      const t = this.$refs.vImage[i]
+      console.log(t)
+      console.log(t.$el)
+      console.log(t.$el.style)
+    },
     isWeChat () {
       const ua = window.navigator.userAgent.toLowerCase()
       return ua.match(/MicroMessenger/i) === 'micromessenger'
@@ -241,10 +247,19 @@ export default {
       const params = {
         type: 0,
         categoryId: this.cates[0].catId
+        // categoryId: 1
       }
       this.$http.get('/goods/findGoodsIde', { params }).then(res => {
         if (res.data.success) {
           this.smartGoods = res.data.obj
+          this.$nextTick(() => {
+            // 处理1：1的图片
+            const arr = this.$refs.vImage
+            arr.forEach(re => {
+              const width = re.width
+              re.height = width
+            })
+          })
         }
       })
     },
@@ -289,6 +304,7 @@ $vInputBg: #cc0505;
   padding-top: 45px;
   padding-bottom: 45px;
   height: 100vh;
+  overflow-x: hidden;
   overflow-y: auto;
 }
 /deep/.v-subheader{
