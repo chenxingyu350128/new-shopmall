@@ -29,7 +29,7 @@
             size="85"
             tile
             class="mr-2"
-            @click.stop="toGoodsDetails(item.goodsId, item.cartId)"
+            @click.stop="toGoodsDetails(item.goodsId)"
           >
             <img :src="item.goodsImg">
           </v-avatar>
@@ -273,13 +273,7 @@ export default {
         this.invalidCartIds = arr.join(',')
       }
     },
-    toGoodsDetails (goodsId, cartId) {
-      const arr = this.invalidCartIds.split(',')
-      console.log(arr)
-      if (arr.indexOf(cartId.toString()) > -1) {
-        this.$toast.warning('商品已失效')
-        return false
-      }
+    toGoodsDetails (goodsId) {
       this.$router.push({
         path: '/goodsDetails',
         query: {
@@ -350,13 +344,6 @@ export default {
       }
     },
     decrease (item) {
-      const arr = this.invalidCartIds.split(',')
-      console.log(arr)
-      if (arr.indexOf(item.goodsId.toString()) > -1) {
-        this.$toast.warning('商品已失效')
-        return false
-      }
-
       if (item.goodsNum > 1) {
         const data = {
           cartId: item.cartId,
@@ -366,13 +353,6 @@ export default {
       }
     },
     increase (item) {
-      const arr = this.invalidCartIds.split(',')
-      console.log(arr)
-      if (arr.indexOf(item.goodsId.toString()) > -1) {
-        this.$toast.warning('商品已失效')
-        return false
-      }
-
       if (this.increaseAvailable(item.goodsNum, item.goodsStock)) {
         const data = {
           cartId: item.cartId,
