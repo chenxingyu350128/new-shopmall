@@ -29,7 +29,7 @@
             size="85"
             tile
             class="mr-2"
-            @click.stop="$router.push({path: '/goodsDetails', query: { goodsId: item.goodsId }})"
+            @click.stop="toGoodsDetails(item.goodsId, item.cartId)"
           >
             <img :src="item.goodsImg">
           </v-avatar>
@@ -42,11 +42,11 @@
               <span class="subtitle-1 primary--text">￥{{item.mallPrice}}</span>
               <div class="flex-fill d-flex align-center justify-end caption">
                 <div class="d-flex align-center">
-                  <v-icon :color="item.goodsNum > 1 ? 'primary' : ''" @click="decrease(item)">mdi-minus-box-outline</v-icon>
+                  <v-icon :color="item.goodsNum > 1 ? 'primary' : ''" @click.stop="decrease(item)">mdi-minus-box-outline</v-icon>
                   <v-card class="mx-2 d-flex justify-center align-center" width="20" height="20" outlined>
                     {{item.goodsNum}}
                   </v-card>
-                  <v-icon :color="increaseAvailable(item.goodsNum, item.goodsStock) ? 'primary' : ''" @click="increase(item)">mdi-plus-box-outline</v-icon>
+                  <v-icon :color="increaseAvailable(item.goodsNum, item.goodsStock) ? 'primary' : ''" @click.stop="increase(item)">mdi-plus-box-outline</v-icon>
                 </div>
               </div>
             </div>
@@ -77,7 +77,7 @@
             <span class="overline text--secondary">商品已失效，请联系客服</span>
           </div>
         </div>
-        <v-icon @click="deleteInvalid($event, item.goodsId)">mdi-trash-can-outline</v-icon>
+        <v-icon @click="deleteInvalid($event, item.cartId)">mdi-trash-can-outline</v-icon>
       </v-card>
     </div>
     <!-- 推荐商品 -->
@@ -138,7 +138,7 @@ export default {
     return {
       page: 1,
       rows: 10,
-      invalidIds: '',
+      invalidCartIds: '',
       allLoaded: false,
       allChecked: false,
       showAlert: false,
@@ -265,13 +265,27 @@ export default {
     async findCartInvalids () {
       const res = await this.$http.get('/cart/findCartInvalids')
       if (res.data.success) {
-        this.invalidGoods = res.data.obj
+        this.invalidGoods = res.data.obj || []
         const arr = []
         this.invalidGoods.forEach(res => {
-          arr.push(res.goodsId)
+          arr.push(res.cartId)
         })
-        this.invalidIds = arr.join(',')
+        this.invalidCartIds = arr.join(',')
       }
+    },
+    toGoodsDetails (goodsId, cartId) {
+      const arr = this.invalidCartIds.split(',')
+      console.log(arr)
+      if (arr.indexOf(cartId.toString()) > -1) {
+        this.$toast.warning('商品已失效')
+        return false
+      }
+      this.$router.push({
+        path: '/goodsDetails',
+        query: {
+          goodsId
+        }
+      })
     },
     async getList (e) {
       const params = {
@@ -325,7 +339,7 @@ export default {
       }
     },
     async deleteInvalid (e, id) {
-      const cartIds = id || this.invalidIds
+      const cartIds = id || this.invalidCartIds
       const data = {
         cartIds
       }
@@ -336,6 +350,13 @@ export default {
       }
     },
     decrease (item) {
+      const arr = this.invalidCartIds.split(',')
+      console.log(arr)
+      if (arr.indexOf(item.goodsId.toString()) > -1) {
+        this.$toast.warning('商品已失效')
+        return false
+      }
+
       if (item.goodsNum > 1) {
         const data = {
           cartId: item.cartId,
@@ -345,6 +366,13 @@ export default {
       }
     },
     increase (item) {
+      const arr = this.invalidCartIds.split(',')
+      console.log(arr)
+      if (arr.indexOf(item.goodsId.toString()) > -1) {
+        this.$toast.warning('商品已失效')
+        return false
+      }
+
       if (this.increaseAvailable(item.goodsNum, item.goodsStock)) {
         const data = {
           cartId: item.cartId,
