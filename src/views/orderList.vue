@@ -227,7 +227,7 @@ export default {
   methods: {
     isWeChat () {
       const ua = window.navigator.userAgent.toLowerCase()
-      return ua.match(/MicroMessenger/i) === 'micromessenger'
+      return ua.indexOf('micromessenger') > -1
     },
     typeChange () {
       this.currentPage = 1

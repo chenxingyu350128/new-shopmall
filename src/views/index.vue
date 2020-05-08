@@ -168,6 +168,12 @@ export default {
     }
   },
   created () {
+    console.log(this.isWeChat())
+    if (this.isWeChat()) { // 微信公众号
+      this.$store.commit('SET_ORIGIN', 'ORIGIN002')
+      this.$store.commit('SET_ENV', 'weChat')
+      return false
+    }
     // app传sessionId, app才需要静默登陆
     const sessionId = window.location.hash.split('sessionId=')[1]
     if (sessionId) {
@@ -182,10 +188,6 @@ export default {
           this.$store.commit('SET_EACH_USER_INFO', res.data.obj)
         }
       })
-    }
-    if (this.isWeChat()) { // 微信公众号
-      this.$store.commit('SET_ORIGIN', 'ORIGIN002')
-      this.$store.commit('SET_ENV', 'weChat')
     }
   },
   mounted () {
@@ -211,15 +213,9 @@ export default {
     this.init()
   },
   methods: {
-    ttt (i) {
-      const t = this.$refs.vImage[i]
-      console.log(t)
-      console.log(t.$el)
-      console.log(t.$el.style)
-    },
     isWeChat () {
       const ua = window.navigator.userAgent.toLowerCase()
-      return ua.match(/MicroMessenger/i) === 'micromessenger'
+      return ua.indexOf('micromessenger') > -1
     },
     back () {
       if (localStorage.getItem('env') === 'app') {
@@ -251,15 +247,17 @@ export default {
       }
       this.$http.get('/goods/findGoodsIde', { params }).then(res => {
         if (res.data.success) {
-          this.smartGoods = res.data.obj
-          this.$nextTick(() => {
-            // 处理1：1的图片
-            const arr = this.$refs.vImage
-            arr.forEach(re => {
-              const width = re.width
-              re.height = width
+          this.smartGoods = res.data.obj || []
+          if (this.smartGoods.length) {
+            this.$nextTick(() => {
+              // 处理1：1的图片
+              const arr = this.$refs.vImage
+              arr.forEach(re => {
+                const width = re.width
+                re.height = width
+              })
             })
-          })
+          }
         }
       })
     },

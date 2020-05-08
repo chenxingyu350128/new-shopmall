@@ -46,17 +46,20 @@
       </v-card>
     </van-list>
     <!-- 删除底栏 -->
-    <v-footer v-if="editFlag && list.length" fixed bottom class="pa-0 white justify-space-between">
-      <div class="d-flex align-end pa-1">
-        <v-icon
-          @click="toggleAllChecked"
-          :color="this.allChecked?'primary':'grey lighten-2'"
-        >
-          {{this.allChecked?'mdi-check-circle':'mdi-circle-outline'}}
-        </v-icon>
-        <span class="caption">全选</span>
+    <v-footer v-if="editFlag && list.length" fixed bottom class="pa-0 white flex-column">
+      <v-divider class="full-width"></v-divider>
+      <div class="full-width d-flex justify-space-between">
+        <div class="d-flex align-end pa-1">
+          <v-icon
+            @click="toggleAllChecked"
+            :color="this.allChecked?'primary':'grey lighten-2'"
+          >
+            {{this.allChecked?'mdi-check-circle':'mdi-circle-outline'}}
+          </v-icon>
+          <span class="caption">全选</span>
+        </div>
+        <v-btn @click="deleteFollow" class="height-fill" depressed tile dark color="primary">删除</v-btn>
       </div>
-      <v-btn @click="deleteFollow" class="height-fill" depressed tile dark color="primary">删除</v-btn>
     </v-footer>
     <recommendGoods />
     <alertBox :show="showAlert" @cancel="showAlert=false" @certain="deleteCertain" title="是否确认删除选中的商品？" />

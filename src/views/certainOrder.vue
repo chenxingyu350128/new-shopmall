@@ -547,10 +547,13 @@ export default {
         let totalNum = 0
         let totalPostagePrice = 0
         this.goodsList.forEach(res => {
-          totalPrice += res.mallPrice
+          totalPrice += (res.mallPrice * res.goodsNum)
           totalNum += res.goodsNum
-          totalPostagePrice += res.postagePrice
+          totalPostagePrice += res.postagePrice * res.goodsNum
+          console.log('totalPostagePrice```', totalPostagePrice)
         })
+        console.log('totalPrice', totalPrice)
+        console.log('totalPostagePrice', totalPostagePrice)
         if (this.memberList.length) {
           this.memberList.forEach(res => {
             this.$set(res, 'checked', false)

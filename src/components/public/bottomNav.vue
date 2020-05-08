@@ -42,7 +42,8 @@ export default {
       return this.$store.state.app.token
     },
     bottomNavIndex () {
-      return this.$store.state.app.tabbarIndex.toString()
+      const x = this.$store.state.app.tabbarIndex
+      return x.toString() || '0'
     }
   },
   methods: {

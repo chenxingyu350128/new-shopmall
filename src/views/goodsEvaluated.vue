@@ -4,6 +4,8 @@
     <v-tabs
       v-model="typeIndex"
       color="primary"
+      grow
+      height="40"
       slider-color="primary"
       @change="onTabChange"
     >
@@ -11,7 +13,16 @@
         <span>{{item.name}}</span>
         <span>{{item.count}}</span>
       </v-tab>
+      <v-divider></v-divider>
     </v-tabs>
+    <div class="pt40">
+      <v-divider></v-divider>
+      <div class="d-flex px-4 py-2 justify-space-between caption">
+        <span>好评率({{goodEvalRate}})</span>
+        <span>好评({{goodEvalRate}})  中评({{averageEvalRate}})   差评({{chapEvalRate}})</span>
+      </div>
+      <v-divider></v-divider>
+    </div>
     <van-list
       v-if="list.length"
       :immediate-check="true"
@@ -141,6 +152,26 @@ export default {
 .page{
   height: 100vh;
   overflow-y: auto;
+  padding-top: 45px;
   overflow-x: hidden;
+}
+.pt40{
+  padding-top: 40px!important;
+}
+/deep/ .v-tabs{
+  z-index: 9;
+  position: fixed;
+  top: 45px;
+  left: 0;
+  right: 0;
+  .v-tab{
+    min-width: unset;
+    padding: 0;
+  }
+  div[role='tablist']{
+    .v-slide-group__prev{
+      display: none!important;
+    }
+  }
 }
 </style>

@@ -33,7 +33,7 @@ const mutations = {
   },
   SET_ORIGIN: (state, res) => {
     Util.setLocal('origin', res)
-    state.loading = res
+    state.origin = res
   },
   NEW_BUILD_ADDRESS: (state, res) => {
     Util.setLocal('newAddressData', res)

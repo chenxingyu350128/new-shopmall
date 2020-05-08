@@ -628,7 +628,8 @@ export default {
         way: e
       }
       // 这里发送数据到给app处理
-      window.webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(shareInfo))
+      // eslint-disable-next-line no-undef
+      webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(shareInfo))
     }
   }
 }

@@ -19,7 +19,6 @@
       >
         <div class="d-flex align-center">
           <v-icon
-            v-if="editable"
             :color="item.checked?'primary':'grey lighten-2'"
           >
             {{item.checked?'mdi-check-circle':'mdi-circle-outline'}}
