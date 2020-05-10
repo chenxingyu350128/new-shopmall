@@ -8,16 +8,14 @@
     </iHeader>
     <v-carousel
       class="white"
-      hide-delimiters
       :show-arrows="isFalse"
-      height="80vw"
     >
       <v-carousel-item
         v-for="(item, i) in carouselItems"
         :key="i"
         contain
       >
-        <img class="fill-height full-width" :src="item">
+        <img class="full-width" :src="item">
       </v-carousel-item>
     </v-carousel>
     <!-- 价格 -->
@@ -661,6 +659,15 @@ export default {
     width: 100%;
     position: fixed;
     bottom: 52px;
+  }
+  /deep/
+  .v-carousel{
+    height: auto!important;
+    line-height: 0;
+  }
+  /deep/
+  .v-carousel__item{
+    height: 100%!important;
   }
   .flexFill{
     flex: 1;
