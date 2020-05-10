@@ -63,26 +63,28 @@
         </span>
       </v-subheader>
       <v-divider></v-divider>
-      <div class="pa-1vw d-flex flex-wrap">
-        <div
+      <v-container class="py-0">
+        <v-row no-gutter>
+        </v-row>
+      </v-container>
+      <div class="red lighten-5 d-flex flex-wrap justify-space-between pa-2 pb-0">
+
+        <v-card
           v-for="(item, i) in smartGoods.slice(0, 4)"
           @click="toDetail(item.goodsId)"
           :key="i"
-          class="vw485 pa-0 d-flex flex-column v-outlined"
+          tile
+          class="space-evenly-width pa-0 mb-2 d-flex flex-column"
         >
+          <v-responsive class="full-width ratio1" :aspect-ratio="1">
+            <img class="full-width fill-height" :src="item.goodsCoverImg">
+          </v-responsive>
           <!-- <img class="full-width" ref="vImage" :src="item.goodsCoverImg"> -->
-          <v-avatar
-            size="48.5vw"
-            tile
-            class='full-width'
-          >
-            <img ref="vImage" :src="item.goodsCoverImg">
-          </v-avatar>
           <div class="white d-flex flex-column align-center px-2">
             <span class="ellipsis full-width caption mb-1">{{item.goodsName}}</span>
             <span class="primary--text full-width">￥{{item.showPrice}}</span>
           </div>
-        </div>
+        </v-card>
       </div>
     </v-card>
     <v-card flat v-if="hotGoods.length" class="my-2 transparent">
@@ -95,7 +97,7 @@
       </v-subheader>
       <v-divider></v-divider>
       <v-container class="py-0">
-        <v-row class="pa-1vw" no-gutter>
+        <v-row no-gutter>
           <v-col
             v-for="(item, i) in hotGoods"
             @click="toDetail(item.goodsId)"
@@ -318,20 +320,10 @@ $vInputBg: #cc0505;
 /deep/.v-tab{
   min-width: unset!important;
 }
-.pa-1vw{
-  padding: 1vw;
+/deep/.ratio1{
+  max-height: calc((100vw - 24px)/2)!important;
 }
-.vw485{
-  width: 48.5vw;
-  margin-bottom: 1vw;
-  &:nth-child(even){
-    background: #000;
-    margin-left: 1vw;
-  }
-}
-.border-1px{
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-  margin-top: -1px;
+.space-evenly-width{
+  width: calc((100vw - 24px)/2);
 }
 </style>

@@ -8,6 +8,10 @@
     </iHeader>
     <v-carousel
       class="white"
+      cycle
+      height="auto"
+      hide-delimiter-background
+      delimiter-icon="mdi-minus"
       :show-arrows="isFalse"
     >
       <v-carousel-item
@@ -662,12 +666,7 @@ export default {
   }
   /deep/
   .v-carousel{
-    height: auto!important;
     line-height: 0;
-  }
-  /deep/
-  .v-carousel__item{
-    height: 100%!important;
   }
   .flexFill{
     flex: 1;
