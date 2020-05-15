@@ -336,6 +336,9 @@ export default {
     token () {
       return this.$store.state.app.token
     },
+    env () {
+      return this.$store.state.app.env
+    },
     goodsStock () {
       let result = 0
       this.goodsSkuList.some(res => {
@@ -377,6 +380,11 @@ export default {
     }
   },
   created () {
+    if (this.env === 'app') {
+      this.$store.commit('SET_ORIGIN', 'ORIGIN001')
+      this.$store.commit('SET_ENV', 'app')
+      return false
+    }
     if (this.isWeChat()) { // 微信公众号
       this.$store.commit('SET_ORIGIN', 'ORIGIN002')
       this.$store.commit('SET_ENV', 'weChat')

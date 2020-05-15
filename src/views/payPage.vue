@@ -55,7 +55,8 @@ export default {
       currentIndex: 1,
       payWay: 1,
       showZFB: true,
-      showAlert: false
+      showAlert: false,
+      payInfo: null
     }
   },
   computed: {
@@ -81,6 +82,7 @@ export default {
   },
   created () {
     this.debouncePay = this._.debounce(this.pay, 30)
+    document.addEventListener('setItemEvent', this.setItemEvent)
   },
   methods: {
     pay () {
@@ -100,13 +102,19 @@ export default {
       this.$http.post('/pay/appYinafPay', data)
         .then(res => {
           if (res.data.success) {
-            const payInfo = {
+            this.payInfo = {
               obj: res.data.obj,
-              payWay: this.payWay
+              payway: this.payWay
             }
-            // 这里发送数据到给app处理
+            if (this.payWay === 1) { // 微信支付，检测微信安装
+              const msg = { wxInstalled: 'Yo!' }
+              // eslint-disable-next-line no-undef
+              webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(msg))
+              return
+            }
+            // 发送数据到给app处理 支付宝
             // eslint-disable-next-line no-undef
-            webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(payInfo))
+            webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(this.payInfo))
           }
         })
     },
@@ -154,17 +162,20 @@ export default {
     setItemEvent (e) {
       if (e.key === 'wxInstalled') {
         if (e.newVal) {
-          this.submit(this.propPrice)
+          window.webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(this.payInfo))
+        } else {
+          this.$toast.warning('请先安装微信')
         }
         // that.wxInstalled = true
       }
       if (e.key === 'paySucceed') {
         if (e.newVal) {
           this.resultType = 4
+          this.$toast.success('支付成功')
         }
         // 去结果页
         this.$router.push({
-          path: '/result',
+          path: '/payResult',
           query: { type: this.resultType }
         })
       }

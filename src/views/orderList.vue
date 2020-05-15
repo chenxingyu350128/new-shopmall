@@ -42,7 +42,7 @@
             <div class="flex-fill ml-2">
               <div class="subtitle-2 font-weight-bold">{{itm.goodsName}}</div>
               <div class="subtitle-1 primary--text text-right">{{itm.goodsPrice}}</div>
-              <div v-if="item.skuSpec" class="caption grey--text text--lighten-2">规格：{{itm.skuSpec}}</div>
+              <div v-if="itm.skuSpec" class="caption grey--text text--lighten-2">规格：{{itm.skuSpec}}</div>
               <div class="subtitle-1 grey--text text-right">X{{itm.goodsNum}}</div>
             </div>
           </div>

@@ -95,6 +95,11 @@ export default {
     }
   },
   created () {
+    if (this.env === 'app') {
+      this.$store.commit('SET_ORIGIN', 'ORIGIN001')
+      this.$store.commit('SET_ENV', 'app')
+      return false
+    }
     // app 不会进入该界面
     if (this.isWeChat()) { // 微信端
       this.$store.commit('SET_ORIGIN', 'ORIGIN002')

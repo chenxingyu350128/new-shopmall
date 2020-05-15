@@ -224,7 +224,7 @@ export default {
       return ua.indexOf('micromessenger') > -1
     },
     back () {
-      if (localStorage.getItem('env') === 'app') {
+      if (this.env === 'app') {
         // location.href = "goback://"   // 回退到客户端
         localStorage.clear()
         const message = { backToApp: true }

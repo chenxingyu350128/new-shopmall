@@ -41,7 +41,7 @@
             <span class="ml-2">{{logisticsName}}</span>
           </span>
         </div>
-        <div class="d-flex justify-space-between">
+        <div class="d-flex">
           <span class="nowrap">物流单号：</span>
           <span class="ml-2">{{logisticsNum}}</span>
         </div>
@@ -64,6 +64,7 @@
       </v-avatar>
       <div class="ml-2 flex-fill d-flex flex-column justify-space-between">
         <div>{{item.goodsName}}</div>
+        <div v-if="item.skuSpec" class="caption grey--text text--lighten-2">规格： {{item.skuSpec}}</div>
         <div class="d-flex justify-space-between">
           <span class="primary--text">￥{{item.goodsPrice}}</span>
           <span>X{{item.goodsNum}}</span>
@@ -71,14 +72,26 @@
       </div>
     </div>
     <v-divider></v-divider>
-    <div class="d-flex justify-space-between px-4 py-2 white">
+    <div class="d-flex justify-space-between px-4 py-2 white caption grey--text">
+      <span>商品总价</span>
+      <span>+￥{{payMoney}}</span>
+    </div>
+    <div class="d-flex justify-space-between px-4 py-2 white caption grey--text">
       <span>运费</span>
-      <span>{{postagePrice}}</span>
+      <span>+￥{{postagePrice}}</span>
+    </div>
+    <div class="d-flex justify-space-between px-4 py-2 white caption grey--text">
+      <span>优惠券</span>
+      <span>-￥{{couponPrice}}</span>
+    </div>
+    <div class="d-flex justify-space-between px-4 py-2 white caption grey--text">
+      <span>订单总价</span>
+      <span>￥{{totalMoney}}</span>
     </div>
     <v-divider></v-divider>
-    <div class="d-flex justify-space-between px-4 py-2 white mb-1">
-      <span>实付款</span>
-      <span>{{totalMoney}}</span>
+    <div class="d-flex justify-space-between px-4 py-2 white mb-1 subtitle-2 primary--text">
+      <span>需付款</span>
+      <span>￥{{totalMoney}}</span>
     </div>
     <div class="px-4 py-2 d-flex align-center white">
       <v-btn depressed x-small color="primary" outlined>积分</v-btn>
