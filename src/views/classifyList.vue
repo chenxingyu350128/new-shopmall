@@ -31,12 +31,11 @@
       v-model="cateIndex"
       height="30"
       @change="ontabClick"
-      grow
     >
       <v-tab
         v-for="(item, i) in categoryList"
         :key="i"
-        class="pa-0"
+        class="pa-2"
       >
         <v-spacer></v-spacer>
           {{item.categoryName}}

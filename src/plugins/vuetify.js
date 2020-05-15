@@ -6,7 +6,7 @@ import VuetifySnackbar from 'vuetify-toast-snackbar'
 Vue.use(Vuetify)
 Vue.use(VuetifySnackbar, {
   x: 'right', // default
-  y: 'bottom', // default
+  y: 'top', // default
   color: 'grey darken-1', // default
   icon: 'mdi-information',
   classes: ['body-2'],

@@ -122,7 +122,7 @@
           <div class="ml-2 flex-fill d-flex flex-column justify-space-between">
             <div class="subtitle-2">
               <p class="mb-0">{{item.goodsName}}</p>
-              <span class="caption text--secondary">{{item.goodsName}}</span>
+              <span v-if="item.skuNameStr" class="caption text--secondary">{{item.skuNameStr}}</span>
             </div>
             <div class="d-flex justify-space-between align-end subtitle-1 font-weight-bold">
               <span class="primary--text">￥{{item.mallPrice}}</span>
@@ -241,6 +241,9 @@ export default {
     orderConfirmData () {
       return this.$store.state.app.orderConfirmData
     },
+    cartIdsInOrder () {
+      return this.$store.state.app.cartIdsInOrder
+    },
     newAddressData () {
       return this.$store.state.app.newAddressData
     },
@@ -291,19 +294,22 @@ export default {
     document.removeEventListener('setItemEvent', this.setItemEvent)
   },
   mounted () {
-    console.log(this.$route.params)
+    this.init()
+    // console.log(this.$route.params)
     // 初始化
-    this.goodsId = this.$route.params.goodsId
-    this.skuGroupids = this.$route.params.skuGroupIds
-    this.goodsNum = this.$route.params.goodsNum
-    if (this.token) {
-      this.getOrderConfirm()
-    } else {
-      // 获取随机4位数的图片验证码
-      this.getRandomNumber()
-    }
+    // this.goodsId = this.$route.params.goodsId
+    // this.skuGroupids = this.$route.params.skuGroupIds
+    // this.goodsNum = this.$route.params.goodsNum
   },
   methods: {
+    init () {
+      if (this.token) {
+        this.getOrderConfirm()
+      } else {
+        // 获取随机4位数的图片验证码
+        this.getRandomNumber()
+      }
+    },
     back () {
       this.$router.back()
     },
@@ -312,7 +318,8 @@ export default {
         path: '/couponList',
         query: {
           fromOrderCertain: true,
-          goodsPrice: this.finalPay
+          goodsPrice: this.totalPrice,
+          goodsIds: this.orderConfirmData.goodsIds
         }
       })
     },
@@ -470,6 +477,7 @@ export default {
       if (res.data.success) {
         this.$store.commit('SET_EACH_USER_INFO', res.data.obj)
         this.buildNewAddress()
+        this.init()
       }
     },
     async buildNewAddress () {
@@ -509,12 +517,17 @@ export default {
         // skuGroupIds,
         // goodsNums,
         ...this.orderConfirmData,
+        cartIds: this.cartIdsInOrder,
         consignee: this.address.receiver,
         contactNumber: this.address.phone,
         region: this.address.region,
         address: this.address.address,
         origin: Number(this.origin.split('').pop()),
         remark: this.remark
+      }
+      // 优惠券
+      if (this.coupon && this.coupon.couponId) {
+        data.couponId = this.coupon.couponId
       }
       if (this.isServiceGoods) { // 服务商品
         if (!this.memberId) {
@@ -531,6 +544,8 @@ export default {
       if (res.data.success) {
         const obj = res.data.obj
         this.$store.commit('ORDER_TO_PAY', obj)
+        this.$store.commit('SELECT_COUPON_FOR_ORDER', null)
+        this.$store.commit('SET_CARTIDS_IN_ORDER', null)
         this.$router.push('/pay')
         console.log(obj)
       }
@@ -542,6 +557,7 @@ export default {
         const obj = res.data.obj
         for (const x in obj) {
           this[x] = obj[x]
+          this.coupon = null
         }
         let totalPrice = 0
         let totalNum = 0

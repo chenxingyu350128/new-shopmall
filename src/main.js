@@ -7,12 +7,20 @@ import vuetify from './plugins/vuetify'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vant/lib/index.css'
-import { DatetimePicker, List, Area, CouponCell, CouponList } from 'vant'
+import { DatetimePicker, List, Area } from 'vant'
 import http from '@/api/api.js' // http请求
+// 上线时注释掉
+import VConsole from 'vconsole'
+if (process.env.NODE_ENV === 'production') {
+  // eslint-disable-next-line no-new
+  new VConsole()
+}
+// eslint-disable-next-line no-new
+// new VConsole()
 
 Vue.prototype._ = _
 Vue.prototype.$http = http
-Vue.use(DatetimePicker).use(List).use(Area).use(CouponCell).use(CouponList)
+Vue.use(DatetimePicker).use(List).use(Area)
 Vue.config.productionTip = false
 
 router.afterEach((to, from, next) => {

@@ -2,7 +2,7 @@
   <div class="page">
     <iHeader @back="showAlert=true" text="订单支付" />
     <div class="price-show d-flex">
-      <h1 class="text-center full-width my-12">￥{{totalMoney}}</h1>
+      <h1 class="text-center full-width my-12">￥{{payMoney}}</h1>
     </div>
     <v-divider></v-divider>
     <div @click="changeWay(1)" class="d-flex justify-space-between align-center pa-2">
@@ -51,7 +51,7 @@ export default {
       orderGoodsList: [],
       orderId: 0,
       createTime: '',
-      totalMoney: 0,
+      payMoney: 0,
       currentIndex: 1,
       payWay: 1,
       showZFB: true,

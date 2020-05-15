@@ -97,6 +97,9 @@ export default {
     },
     userName () {
       return this.$store.state.app.userName
+    },
+    token () {
+      return this.$store.state.app.token
     }
   },
   mounted () {
@@ -111,23 +114,19 @@ export default {
   },
   methods: {
     init () {
-      if (localStorage.getItem('token')) {
-        this.$http.get('/user/findGoodsFollowPage', { params: { pageSize: 100 } }).then(res => {
-          this.interestCount = res.data.rows.length
-          if (res.data.pager.totalPages > res.data.pager.currentPage) {
-            this.interestCount += '+'
-          }
-        })
-        this.$http.get('/user/findGoodsTracksPage', { params: { pageSize: 100 } }).then(res => {
-          this.footprintCount = res.data.rows.length
+      this.$http.get('/user/findGoodsFollowPage', { params: { pageSize: 100 } }).then(res => {
+        this.interestCount = res.data.rows.length
+        if (res.data.pager.totalPages > res.data.pager.currentPage) {
+          this.interestCount += '+'
+        }
+      })
+      this.$http.get('/user/findGoodsTracksPage', { params: { pageSize: 100 } })
+        .then(res => {
+          this.footprintCount = res.data.rows.length || 0
           if (res.data.pager.totalPages > res.data.pager.currentPage) {
             this.footprintCount += '+'
           }
         })
-      } else {
-        console.log('biu')
-        this.$router.replace({ path: '/login' })
-      }
     },
     myInterest () {
       if (localStorage.getItem('token')) {

@@ -42,7 +42,7 @@
             <div class="flex-fill ml-2">
               <div class="subtitle-2 font-weight-bold">{{itm.goodsName}}</div>
               <div class="subtitle-1 primary--text text-right">{{itm.goodsPrice}}</div>
-              <div class="caption grey--text text--lighten-2">规格：{{itm.skuSpec}}</div>
+              <div v-if="item.skuSpec" class="caption grey--text text--lighten-2">规格：{{itm.skuSpec}}</div>
               <div class="subtitle-1 grey--text text-right">X{{itm.goodsNum}}</div>
             </div>
           </div>
@@ -50,13 +50,13 @@
         <v-divider></v-divider>
         <div class="pa-2 text-right">共{{item.count}}件商品，合计￥{{item.totalMoney}}(不含运费)</div>
         <div class="pa-2 text-right">
-          <v-btn @click.stop="deleteOrder({id: item.orderId})" small class="ml-2" v-if="item.dealStatus >= 5" color="primary" depressed>删除订单</v-btn>
+          <v-btn @click.stop="deleteOrder({orderId: item.orderId})" small class="ml-2" v-if="item.dealStatus >= 5" color="primary" depressed>删除订单</v-btn>
           <v-btn @click.stop="payOrder(item)" small class="ml-2" v-if="item.dealStatus===1" color="primary" depressed>付款</v-btn>
-          <v-btn @click.stop="remind({id: item.orderId})" small class="ml-2" v-if="item.dealStatus===2" color="primary" depressed>提醒发货</v-btn>
-          <v-btn @click.stop="confirmGet({id: item.orderId})" small class="ml-2" v-if="item.dealStatus===3" color="primary" depressed>确认收货</v-btn>
+          <v-btn @click.stop="remind({orderId: item.orderId})" small class="ml-2" v-if="item.dealStatus===2" color="primary" depressed>提醒发货</v-btn>
+          <v-btn @click.stop="confirmGet({orderId: item.orderId})" small class="ml-2" v-if="item.dealStatus===3" color="primary" depressed>确认收货</v-btn>
           <v-btn @click.stop="review({item: item})" small class="ml-2" v-if="item.dealStatus===4" color="primary" depressed>评价</v-btn>
-          <v-btn @click.stop="cancelOrder({id: item.orderId})" small class="ml-2" v-if="item.dealStatus === 1||item.dealStatus === 2" color="primary" depressed>取消订单</v-btn>
-          <v-btn @click.stop="refund({id: item.orderId})" small class="ml-2" v-if="item.dealStatus === 2||item.dealStatus === 3" color="primary" depressed>退款</v-btn>
+          <v-btn @click.stop="cancelOrder({orderId: item.orderId})" small class="ml-2" v-if="item.dealStatus === 1" color="primary" depressed>取消订单</v-btn>
+          <v-btn @click.stop="refund({orderId: item.orderId})" small class="ml-2" v-if="item.dealStatus === 2||item.dealStatus === 3" color="primary" depressed>退款</v-btn>
         </div>
       </v-card>
     </van-list>
@@ -65,7 +65,7 @@
       v-if="showDetails"
       ref="order"
       :order-id="orderId"
-      @payOrder="payOrder($event)"
+      @payOrder="payOrder()"
       @cancelOrder="cancelOrder($event)"
       @deleteOrder="deleteOrder($event)"
       @refund="refund($event)"
@@ -267,6 +267,7 @@ export default {
       this.handle(this.handleText, data)
     },
     cancelOrder (obj) { // 取消订单
+      console.log(obj)
       this.orderId = obj ? obj.orderId : this.orderObj.orderId
       this.alertTitle = '确认取消此订单吗?'
       this.handleText = 'cancelOrder'
@@ -305,7 +306,8 @@ export default {
     },
     payOrder (item) {
       // 再次支付
-      this.$store.commit('ORDER_TO_PAY', item)
+      const obj = item || this.orderObj
+      this.$store.commit('ORDER_TO_PAY', obj)
       this.$router.push('/pay')
     },
     loadmore () {
@@ -323,6 +325,21 @@ export default {
             const rows = res.data.rows
             this.allLoaded = pager.currentPage === pager.totalPages
             this.list = sign ? this.list.concat(rows) : rows
+            this.list.sort((x, y) => {
+              const regex = /-/gi
+              const xx = Date.parse(x.createTime.replace(regex, '/'))
+              const yy = Date.parse(y.createTime.replace(regex, '/'))
+              const result = xx - yy
+              if (result === 0) {
+                return 0
+              }
+              if (result > 0) {
+                return -1
+              }
+              if (result < 0) {
+                return 1
+              }
+            })
           }
         })
     },

@@ -16,6 +16,7 @@ const state = {
   current_key: Util.getLocal('current_key'),
   // 订单确认数据
   orderConfirmData: Util.getLocal('orderConfirmData'),
+  cartIdsInOrder: Util.getLocal('cartIdsInOrder'),
   newAddressData: Util.getLocal('newAddressData'),
   cartGoods: Util.getLocal('cartGoods') || [],
   addressList: Util.getLocal('addressList') || [],
@@ -98,6 +99,10 @@ const mutations = {
   SET_ORDER_CONFIRM_DATA: (state, res) => {
     Util.setLocal('orderConfirmData', res)
     state.orderConfirmData = res
+  },
+  SET_CARTIDS_IN_ORDER: (state, res) => {
+    Util.setLocal('cartIdsInOrder', res)
+    state.cartIdsInOrder = res
   },
   ORDER_TO_PAY: (state, res) => {
     Util.setLocal('orderToPay', res)

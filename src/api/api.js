@@ -7,13 +7,13 @@ const api = axios.create({
   // baseURL: 'http://mall.yinaf.com',
   // baseURL: 'http://192.168.1.99:8080',
   baseURL: 'http://192.168.1.101:8080/mall',
+  // baseURL: '/',
   timeout: 5000
 })
 // 请求拦截
 api.interceptors.request.use(
   function (config) {
     const token = store.state.app.token
-    console.log(token)
     const url = config.url
 
     const tokenNotNeed = [
@@ -27,14 +27,13 @@ api.interceptors.request.use(
       '/user/login',
       '/goods/getMobileCode',
       '/goods/findGoodsIde',
-      '/goods/findGoodsRecommend'
+      '/goods/findGoodsRecommend',
+      '/goods/findGoodsCoupon'
     ]
     if (token && !tokenNotNeed.includes(url)) { // 请求不能带token
       config.headers.token = token
     }
     if (config.method === 'post') {
-      console.log(config.url)
-
       if (config.url === '/file/fileUpload') {
         config.headers['Content-Type'] = 'multipart/form-data'
       } else {
@@ -46,7 +45,6 @@ api.interceptors.request.use(
     // if (store.state.app.token) {
     //   config.headers.token = store.state.app.token
     // }
-    console.log(config)
     store.commit('SET_LOADING', true)
     return config
   },

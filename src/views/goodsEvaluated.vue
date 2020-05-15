@@ -13,7 +13,6 @@
         <span>{{item.name}}</span>
         <span>{{item.count}}</span>
       </v-tab>
-      <v-divider></v-divider>
     </v-tabs>
     <div class="pt40">
       <v-divider></v-divider>
@@ -30,22 +29,35 @@
       loading-text="加载中..."
       finished-text="已全部加载完"
       @load="loadBottom"
-      class="px-3"
+      class="px-2"
 
     >
-      <div
+      <v-card
         v-for="(item, i) in list"
         :key="i"
+        class="my-2 pa-2"
       >
-        <div class="d-flex">
-          <div class="left">
-
-          </div>
-          <div class="right">
-            {{item.createTime}}
+        <div class="d-flex align-center">
+          <v-avatar
+            size="50"
+            tile
+          >
+            <img :src="item.img">
+          </v-avatar>
+          <div class="flex-fill ml-2">
+            <div class="subtitle-2 flex-fill d-flex">
+              {{item.userName}}
+              <span class="caption flex-fill text-right">{{item.createTime}}</span>
+            </div>
+            <v-rating readonly background-color="primary" x-small dense v-model="item.eval"></v-rating>
           </div>
         </div>
-      </div>
+        <p class="my-2 body-2">{{item.content}}</p>
+        <v-divider v-if="item.img"></v-divider>
+        <div v-if="item.img" class="d-flex mt-2">
+          <img class="pic" v-for="(itm, idx) in item.img.split(',')" :key="idx" :src="itm" alt="">
+        </div>
+      </v-card>
     </van-list>
   </div>
 </template>
@@ -157,6 +169,10 @@ export default {
 }
 .pt40{
   padding-top: 40px!important;
+}
+.pic{
+  max-width: calc((100vw - 16px) / 4);
+  max-height: calc((100vw - 16px) / 4);
 }
 /deep/ .v-tabs{
   z-index: 9;

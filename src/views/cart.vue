@@ -183,12 +183,29 @@ export default {
       }
       return base
     },
-    goodsIdList () { // 被选中的商品的各个id
+    goodsIdList () { // 被选中的商品的goodsId
       const id = []
       let base = ''
       this.list.forEach(good => {
         if (good.checked) {
           id.push(good.goodsId)
+        }
+      })
+      if (id.length > 1) {
+        base = id.reduce((x, y) => {
+          return x + ',' + y
+        })
+      } else {
+        base = id[0]
+      }
+      return base
+    },
+    cartIdList () { // 被选中的商品的cartId
+      const id = []
+      let base = ''
+      this.list.forEach(good => {
+        if (good.checked) {
+          id.push(good.cartId)
         }
       })
       if (id.length > 1) {
@@ -318,6 +335,7 @@ export default {
           goodsNums: this.goodsNumList
         }
         this.$store.commit('SET_ORDER_CONFIRM_DATA', data)
+        this.$store.commit('SET_CARTIDS_IN_ORDER', this.cartIdList)
         this.$router.push('/certainOrder')
       }
     },

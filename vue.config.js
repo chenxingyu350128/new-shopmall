@@ -10,7 +10,7 @@ module.exports = {
   // 相对outputDir
   indexPath: 'index.html',
   lintOnSave: false,
-  productionSourceMap: false,
+  productionSourceMap: false
   // chainWebpack: config => {
   //   if (process.env.use_analyzer) {
   //     config
@@ -18,26 +18,12 @@ module.exports = {
   //       .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
   //   }
   // }
-  configureWebpack: {
-    // externals:{
-    //   vue: 'Vue',
-    //   vuetify: 'Vuetify',
-    //   'chart.js': 'Chart',
-    //   vuex: 'Vuex',
-    //   mockjs: 'Mock',
-    //   'vue-router': 'VueRouter',
-    //   lodash: '_'
-    // }
-  }
   // devServer: {
   //   proxy: {
-  //     '/api': {
+  //     '/': {
   //       target: 'http://192.168.1.101:8080/mall',
   //       ws: true,
-  //       changeOrigin: true,
-  //       pathRewrite: {
-  //         '^/api': ''
-  //       }
+  //       changeOrigin: true
   //     }
   //   }
   // }

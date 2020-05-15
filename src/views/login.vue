@@ -77,6 +77,7 @@
 <script>
 
 export default {
+  name: 'Login',
   data () {
     return {
       tel: '',
@@ -86,6 +87,21 @@ export default {
       fromOrderCertain: false,
       innerText: '获取验证码',
       msgLogin: true
+    }
+  },
+  computed: {
+    origin () {
+      return this.$store.state.app.origin
+    }
+  },
+  created () {
+    // app 不会进入该界面
+    if (this.isWeChat()) { // 微信端
+      this.$store.commit('SET_ORIGIN', 'ORIGIN002')
+      this.$store.commit('SET_ENV', 'weChat')
+    } else { // H5
+      this.$store.commit('SET_ORIGIN', 'ORIGIN003')
+      this.$store.commit('SET_ENV', 'h5')
     }
   },
   mounted () {
@@ -109,12 +125,11 @@ export default {
       })
     }
   },
-  computed: {
-    origin () {
-      return this.$store.state.app.origin
-    }
-  },
   methods: {
+    isWeChat () {
+      const ua = window.navigator.userAgent.toLowerCase()
+      return ua.indexOf('micromessenger') > -1
+    },
     checkPhone (e) {
       return /^1[3456789]\d{9}$/.test(e)
     },
@@ -188,7 +203,10 @@ export default {
               return false
             }
 
-            this.$toast.success('登录成功')
+            this.$toast('登录成功', {
+              y: 'top',
+              color: 'success'
+            })
             this.$store.commit('SET_EACH_USER_INFO', res.data.obj)
             const redirectPath = this.fromOrderCertain ? '/certainOrder' : '/index'
             this.$router.replace(redirectPath)

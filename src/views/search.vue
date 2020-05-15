@@ -96,7 +96,7 @@
           {{item}}
           <v-icon
             v-if="i === tabList.length - 1"
-            @click="priceToggle"
+            @click.stop="priceToggle"
           >
             {{priceReverse ? 'mdi-chevron-down' : 'mdi-chevron-up'}}
           </v-icon>
@@ -244,7 +244,7 @@ export default {
       this.$nextTick(() => {
         this.priceReverse = !this.priceReverse
         this.page = 1
-        this.getResult('Yo')
+        this.getResult()
       })
     },
     getResult (e) {

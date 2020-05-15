@@ -9,17 +9,17 @@
     color="primary"
   >
     <!-- v-model="bottomNavIndex" -->
-    <v-btn value="0" @click="changeRouter(0)">
+    <v-btn  @click="changeRouter(0)">
       <span>首页</span>
       <v-icon>mdi-home-outline</v-icon>
     </v-btn>
 
-    <v-btn value="1" @click="changeRouter(1)">
+    <v-btn  @click="changeRouter(1)">
       <span>购物车</span>
       <v-icon>mdi-cart</v-icon>
     </v-btn>
 
-    <v-btn value="2" @click="changeRouter(2)">
+    <v-btn  @click="changeRouter(2)">
       <span>我的</span>
       <v-icon>mdi-account-circle</v-icon>
     </v-btn>
@@ -43,7 +43,7 @@ export default {
     },
     bottomNavIndex () {
       const x = this.$store.state.app.tabbarIndex
-      return x.toString() || '0'
+      return x
     }
   },
   methods: {
@@ -59,8 +59,6 @@ export default {
   watch: {
     $route: {
       handler: function (val) {
-        console.log(val.fullPath)
-        console.log(val)
         const routerPath = val.path
         this.active = this.tabbarRoutes.indexOf(routerPath) !== -1
       },
@@ -72,7 +70,8 @@ export default {
       handler (val) {
         this.index = val
       },
-      immediate: true
+      immediate: true,
+      deep: true
     }
   }
 }
@@ -80,7 +79,7 @@ export default {
 
 <style lang="scss" scoped>
   .bottomNav{
-    z-index: 6;
+    z-index: 111!important;
     /deep/ .v-btn__content{
       padding: 0;
       justify-content: space-around;

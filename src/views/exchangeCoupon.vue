@@ -12,7 +12,7 @@
       v-model="exCode"
       placeholder="请输入兑换码"
     ></v-text-field>
-    <v-btn block color="primary" rounded dark depressed>兑换</v-btn>
+    <v-btn @click="exChange" block color="primary" rounded dark depressed>兑换</v-btn>
     <div class="d-flex align-center my-4">
       <v-divider></v-divider>
       <span class="mx-4 grey--text subtitle-2">已兑换优惠券</span>

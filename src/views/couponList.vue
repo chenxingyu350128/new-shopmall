@@ -6,14 +6,14 @@
     <iHeader @back="$router.back()" text="我的优惠券" />
     <div v-if="list.length">
       <div class="px-4 py-2 d-flex justify-space-between align-center caption">
-        <span>可使用优惠券（{{}}张）</span>
+        <span>可使用优惠券（{{list.length}}张）</span>
         <div class="d-flex align-center">
           <v-icon class="mr-2">mdi-help-circle</v-icon>
           使用规则
         </div>
       </div>
       <div v-for="(item, i) in list" :key="i">
-        <coupon @selectCoupon="selectCoupon($event)" :goodsPrice="goodsPrice" class="my-2" :item="item" />
+        <coupon @selectCoupon="selectCoupon($event)" :goodsIds="goodsIds" :goodsPrice="goodsPrice" class="my-2" :item="item" />
       </div>
     </div>
     <none v-else />
@@ -45,7 +45,8 @@ export default {
     allLoaded: false,
     showExchange: false,
     fromOrderCertain: false,
-    goodsPrice: 0
+    goodsPrice: 0,
+    goodsIds: ''
   }),
   computed: {
     list () {
@@ -84,10 +85,14 @@ export default {
   },
   mounted () {
     const goodsPrice = this.$route.query.goodsPrice
+    const goodsIds = this.$route.query.goodsIds
     const fromOrderCertain = this.$route.query.fromOrderCertain
     this.$store.commit('ADDRESS_BACK_FLAG', this.fromOrderCertain)
     if (goodsPrice) {
       this.goodsPrice = Number(goodsPrice)
+    }
+    if (goodsIds) {
+      this.goodsIds = Number(goodsIds)
     }
     if (fromOrderCertain) {
       this.fromOrderCertain = fromOrderCertain

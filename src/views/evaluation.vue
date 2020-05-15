@@ -1,7 +1,7 @@
 <template>
   <div class="page grey lighten-3">
     <iHeader class="iHeader" @back="$emit('hide')" text="商品评价" />
-    <div class="pa-2">
+    <div>
       <!-- 商品 -->
       <div v-for="(item, i) in orderGoodsList" :key="i" class="white pa-2 mb-2">
         <div class="d-flex align-center mb-2">
@@ -43,11 +43,11 @@
               </v-avatar>
             </label>
           </div>
-          <div v-if="item.images.length" class="flex-fill d-flex">
+          <div v-if="item.images.length" class="flex-fill d-flex justify-space-around">
             <div
               v-for="(x, idx) in item.images"
               :key="idx"
-              class="uploadPic ml-4"
+              class="uploadPic"
             >
               <v-avatar
                 size="65"
@@ -136,25 +136,33 @@ export default {
   },
   methods: {
     selectImage (e, item) {
+      console.log(e)
       const file = e.target.files[0]
-      const name = 'upload' + file.type.split('/')[1]
+      // const name = 'upload' + file.type.split('/')[1]
       const fd = new FormData()
-      fd.append('file', file, name)
+      fd.append('file', file)
       this.$http.post('/file/fileUpload', fd)
         .then(res => {
           if (res.data.success) {
             // 改变图片
             const pic = res.data.obj.url
             if (!this.addClick) {
+              console.log('tihuan')
+              console.log(this.editItem)
               const arr = this.editItem.images.splice(this.editImageIndex, 1, pic)
-              this.$set(this.editItem, 'images', arr)
+              console.log(arr)
+              // this.$set(this.editItem, 'images', arr)
               this.addClick = true // 还原
               return false
             }
-            const images = res.images
+            const images = item.images
+            console.log(images)
             images.push(pic)
             this.$set(item, 'images', images)
           }
+        })
+        .then(() => {
+          this.addClick = true // 还原
         })
     },
     reduceMap1 (e) {
@@ -228,7 +236,7 @@ export default {
 <style lang="scss" scoped>
 .page{
   position: fixed;
-  z-index: 66;
+  z-index: 999;
   left: 0;
   right: 0;
   top: 0;

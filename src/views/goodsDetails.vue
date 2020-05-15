@@ -70,7 +70,7 @@
       <v-tab>售后保障</v-tab>
     </v-tabs>
     <v-tabs-items v-model="tabIndex">
-      <v-tab-item class="goodsDetails pb-12" v-html="goodsDetails" />
+      <v-tab-item class="goodsDetails mb-12" v-html="goodsDetails" />
       <v-tab-item class="pa-2 pb-12">
         <img
           class="full-width"
@@ -146,7 +146,7 @@
           <span>优惠</span>
           <v-icon @click="showCouponList=false" color="primary">mdi-close-box</v-icon>
         </div>
-        <iCoupon @click.native="takeCoupon(item, item.couponId)" v-for="(item, i) in couponList" :key="i" class="mt-2" :item="item" />
+        <iCoupon :goodsIds="goodsId.toString()" :goodsPrice="mallPrice" @selectCoupon="takeCoupon($event)" v-for="(item, i) in couponList" :key="i" class="mt-2" :item="item" />
       </div>
     </v-bottom-sheet>
     <!-- 规格选择 -->
@@ -280,6 +280,7 @@ export default {
       isFollowed: 0,
       carouselItems: [],
       couponList: [],
+      userCoupon: [],
       tabIndex: 0,
       showBase: false, // 显示popup
       eachActive: [],
@@ -359,17 +360,47 @@ export default {
       return this.goodsNum < this.goodsStock && this.goodsNum < 99
     }
   },
+  watch: {
+    userCoupon: {
+      handler (val) {
+        if (val.length) {
+          val.forEach(rs => {
+            this.couponList.forEach(res => {
+              if (res.couponId === rs) {
+                res.alreadyGet = true
+              }
+            })
+          })
+        }
+      },
+      immediate: true
+    }
+  },
+  created () {
+    if (this.isWeChat()) { // 微信公众号
+      this.$store.commit('SET_ORIGIN', 'ORIGIN002')
+      this.$store.commit('SET_ENV', 'weChat')
+    } else {
+      this.$store.commit('SET_ORIGIN', 'ORIGIN003')
+      this.$store.commit('SET_ENV', 'h5')
+    }
+  },
   mounted () {
     this.goodsId = this.$route.query.goodsId
     this.scrollEvent()
     this.getGoodsDetails()
+    this.findGoodsCoupon()
     if (this.token) {
-      this.findGoodsCoupon() // 优惠券
       this.checkFollow() // 商品是否已关注
       this.findGoodsTracks() // 添加足迹
+      this.findUserCoupon() // 查看用户优惠券
     }
   },
   methods: {
+    isWeChat () {
+      const ua = window.navigator.userAgent.toLowerCase()
+      return ua.indexOf('micromessenger') > -1
+    },
     scrollEvent () {
       const that = this
       const page = this.$refs.page
@@ -422,31 +453,39 @@ export default {
       }
       this.$http.get('/goods/findGoodsCoupon', { params })
         .then(res => {
-          if (res.data && res.data.success) {
+          if (res.data.success) {
             this.couponList = res.data.obj
+            this.couponList.forEach(rs => {
+              this.$set(rs, 'alreadyGet', false)
+            })
           }
         })
     },
-    takeCoupon (item, couponId) {
-      console.log('lll')
-      const dateNow = Date.now()
-      const end = Date.parse(item.endTime)
-      const start = Date.parse(this.startTime)
-      console.log(dateNow, start, end)
-      const checked = start <= dateNow && end >= dateNow
-      if (!checked) {
+    findUserCoupon () {
+      this.$http.get('/goods/findUserCoupon')
+        .then(res => {
+          if (res.data && res.data.success) {
+            this.userCoupon = res.data.obj
+          }
+        })
+    },
+    takeCoupon (coupon) {
+      // 未登录
+      if (!this.token) {
+        this.$toast.error('未登录，无法领券')
         return false
       }
       // 关闭领券视图
       this.showCouponList = false
       const data = {
-        couponId
+        couponId: coupon.couponId
       }
       this.$http.post('/goods/bindCouponUser', data)
         .then(res => {
           if (res.data.success) {
-            // 领取成功,领券接口重置
-            this.findGoodsCoupon()
+            // 领取成功,已领券接口重置
+            this.$toast.success('优惠券领取成功！')
+            this.findUserCoupon()
           }
         })
     },
@@ -487,16 +526,16 @@ export default {
         },
         {
           state: nLen === 1,
-          result: '已选：' + this.skuNameGroup[0]
+          result: this.skuNameGroup[0]
         },
         {
           state: nLen > 1,
-          result: this.checkNoEmpty(this.skuNameGroup) ? '已选：' + this.skuNameGroup.join('-') : '请选择规格'
+          result: this.checkNoEmpty(this.skuNameGroup) ? this.skuNameGroup.join('-') : '请选择规格'
         }
       ]
       nameArr.forEach(res => {
         if (res.state) {
-          this.skuName$ = res.result
+          this.skuName$ = res.result === '请选择规格' ? '请选择规格' : '已选： ' + res.result
         }
       })
       // 最终id
@@ -535,7 +574,7 @@ export default {
       const idArr = this.skuId$.split('_')
       nameArr[i] = itm.specvName
       idArr[i] = itm.specvNo
-      this.skuName$ = nameArr.join('-')
+      this.skuName$ = '已选：' + nameArr.join('-')
       this.skuId$ = idArr.join('_')
     },
     checkFollow () {

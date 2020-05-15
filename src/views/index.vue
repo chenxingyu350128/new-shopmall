@@ -254,16 +254,6 @@ export default {
       this.$http.get('/goods/findGoodsIde', { params }).then(res => {
         if (res.data.success) {
           this.smartGoods = res.data.obj || []
-          if (this.smartGoods.length) {
-            this.$nextTick(() => {
-              // 处理1：1的图片
-              const arr = this.$refs.vImage
-              arr.forEach(re => {
-                const width = re.width
-                re.height = width
-              })
-            })
-          }
         }
       })
     },

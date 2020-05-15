@@ -1,7 +1,8 @@
 <template>
-  <div class="wrap" @click="selectCoupon">
+  <div class="wrap">
     <div
       v-if="available"
+      @click="selectCoupon"
       class="base-coupons white--text py-2 d-flex"
     >
       <div class="left-side d-flex flex-column align-center">
@@ -11,12 +12,7 @@
       <div class="right-side flex-fill ml-1 pa-2 d-flex flex-column">
         <div class="d-flex align-center justify-space-between">
           <span>{{ couponName }}</span>
-          <!-- <v-icon
-            v-if="!!available"
-            color="white"
-          >
-            mdi-check-circle
-          </v-icon> -->
+          <v-btn v-if="alreadyGet" color="grey lighten-3">已领取</v-btn>
         </div>
         <div class="caption mt-2">
           有效期：{{ startTime.split(' ')[0] }} - {{ endTime.split(' ')[0] }}
@@ -34,15 +30,10 @@
       <div class="right-side flex-fill ml-1 pa-2 d-flex flex-column">
         <div class="d-flex align-center justify-space-between">
           <span>{{ couponName }}</span>
-          <!-- <v-icon
-            v-if="!!available"
-            color="pink lighten-2"
-          >
-            mdi-check-circle
-          </v-icon> -->
+          <v-btn v-if="alreadyGet" small dark depressed color="grey lighten-3">已领取</v-btn>
         </div>
         <div class="caption mt-2">
-          开始时间：{{ startTime }}
+            有效期：{{ startTime.split(' ')[0] }} - {{ endTime.split(' ')[0] }}
         </div>
       </div>
     </div>
@@ -61,6 +52,11 @@ export default {
       type: Number,
       required: false,
       default: 0
+    },
+    goodsIds: {
+      type: String,
+      required: false,
+      default: ''
     }
   },
   data: () => ({
@@ -68,28 +64,52 @@ export default {
     couponMoney: 150, // 优惠金额
     couponName: '腕表设备专用', // 名称
     couponType: 2, // 优惠劵类型 1满减  2指定商品
-    endTime: '2020-05-15 17:02:13', // 优惠劵结束时间
+    endTime: '', // 优惠劵结束时间
     goodsId: 1,
     instructions: '在指定时间用哦，过期作废', // 使用说明
     quota: 50, // 发放优惠券总数
     satisfyMoney: 500, // 条件金额
-    startTime: '2020-04-22 17:02:07', // 优惠劵开始时间
+    startTime: '', // 优惠劵开始时间
     takeCount: 0, // 已领取优惠劵数量
-    usedCount: 0 // 已使用优惠券数量
+    usedCount: 0, // 已使用优惠券数量
+    alreadyGet: false // 商品详情页 是否已领取
   }),
   computed: {
     available () {
       const dateNow = Date.now()
-      const end = Date.parse(this.endTime)
-      const start = Date.parse(this.startTime)
-      console.log(dateNow, start, end)
+      const regex = /-/gi
+      const end = Date.parse(this.endTime.replace(regex, '/'))
+      const start = Date.parse(this.startTime.replace(regex, '/'))
       const dateChecked = start <= dateNow && end >= dateNow
-      if (!this.goodsPrice) {
-        return dateChecked
+      const priceChecked = this.goodsPrice >= this.satisfyMoney
+
+      if (this.goodsId) { // 日期和价格为必要
+        // 专属券
+        const idYes = this.goodsId.toString() === this.goodsIds.toString()
+        return priceChecked && dateChecked && idYes && !this.alreadyGet
       } else {
-        const priceChecked = this.goodsPrice >= this.satisfyMoney
-        return priceChecked && dateChecked
+        return priceChecked && dateChecked && !this.alreadyGet
       }
+    }
+  },
+  watch: {
+    item: {
+      handler (val) {
+        console.log(val)
+        if (val) {
+          this.alreadyGet = val.alreadyGet
+        }
+        // for (const x in val) {
+        //   this[x] = val[x]
+        // }
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+  updated () {
+    for (const x in this.item) {
+      this[x] = this.item[x]
     }
   },
   mounted () {
@@ -99,9 +119,7 @@ export default {
   },
   methods: {
     selectCoupon () {
-      if (this.available) {
-        this.$emit('selectCoupon', this.item)
-      }
+      this.$emit('selectCoupon', this.item)
     }
   }
 }
@@ -114,10 +132,10 @@ export default {
     margin: auto;
     height: 25vw;
     position: relative;
-    background: radial-gradient(circle at right top, transparent 2.5vw,  #F8BBD0 0) top left / calc((100vw - 16px)/4) 51% no-repeat,
-      radial-gradient(circle at right bottom, transparent 2.5vw,  #F8BBD0 0) bottom left /calc((100vw - 16px)/4) 51% no-repeat,
-      radial-gradient(circle at left top, transparent 2.5vw, #F8BBD0 0) top right /calc((100vw - 16px)/4*3) 51% no-repeat,
-      radial-gradient(circle at left bottom, transparent 2.5vw, #F8BBD0 0) bottom right /calc((100vw - 16px)/4*3) 51% no-repeat;
+    background: radial-gradient(circle at right top, transparent 2.5vw,  #e3393c 0) top left / calc((100vw - 16px)/4) 51% no-repeat,
+      radial-gradient(circle at right bottom, transparent 2.5vw,  #e3393c 0) bottom left /calc((100vw - 16px)/4) 51% no-repeat,
+      radial-gradient(circle at left top, transparent 2.5vw, #e3393c 0) top right /calc((100vw - 16px)/4*3) 51% no-repeat,
+      radial-gradient(circle at left bottom, transparent 2.5vw, #e3393c 0) bottom right /calc((100vw - 16px)/4*3) 51% no-repeat;
     filter: drop-shadow(3px 3px 3px rgba(0,0,0,.3));
     .left-side{
       width: calc((100vw - 16px)/4);
@@ -161,8 +179,8 @@ export default {
     background-size: 5px 15px;
   }
   .base-coupons::after{
-    background-image: linear-gradient(to bottom, #F8BBD0 5px, transparent 5px, transparent),
-    radial-gradient(2.5vw circle at 5px 2.5vw, transparent 5px, #F8BBD0 5px);
+    background-image: linear-gradient(to bottom, #e3393c 5px, transparent 5px, transparent),
+    radial-gradient(2.5vw circle at 5px 2.5vw, transparent 5px, #e3393c 5px);
   }
 
 </style>

@@ -13,7 +13,7 @@
         <img :src="icons[dealStatus-1]">
       </v-avatar>
     </div>
-    <!-- 物流信息 -->
+    <!-- 收货方信息 -->
     <div class="white pa-2 mb-1 d-flex align-center justify-space-between">
       <v-icon>mdi-map-marker</v-icon>
       <div class="flex-fill caption mx-2">
@@ -27,6 +27,23 @@
         <div class="d-flex justify-space-between">
           <span class="nowrap">收货地址：</span>
           <span class="ml-2">{{region.split('-').join('')}}{{address}}</span>
+        </div>
+      </div>
+      <v-icon>mdi-chevron-right</v-icon>
+    </div>
+    <!-- 物流信息 -->
+    <div v-if="logisticsNum" class="white pa-2 mb-1 d-flex align-center justify-space-between">
+      <v-icon>mdi-truck</v-icon>
+      <div class="flex-fill caption mx-2">
+        <div class="d-flex justify-space-between">
+          <span class="nowrap">
+            物流公司：
+            <span class="ml-2">{{logisticsName}}</span>
+          </span>
+        </div>
+        <div class="d-flex justify-space-between">
+          <span class="nowrap">物流单号：</span>
+          <span class="ml-2">{{logisticsNum}}</span>
         </div>
       </div>
       <v-icon>mdi-chevron-right</v-icon>
@@ -87,7 +104,7 @@
       <div v-if="dealStatus === 2" class="text-right full-width">
         <v-btn class="ml-2" small color="primary" depressed @click="refund">退款</v-btn>
         <v-btn class="ml-2" small color="primary" depressed @click="remind">提醒发货</v-btn>
-        <v-btn class="ml-2" small color="primary" depressed @click="cancelOrder">取消订单</v-btn>
+        <!-- <v-btn class="ml-2" small color="primary" depressed @click="cancelOrder">取消订单</v-btn> -->
       </div>
       <div v-if="dealStatus === 3" class="text-right full-width">
         <v-btn class="ml-2" small color="primary" depressed @click="refund">退款</v-btn>
@@ -96,7 +113,7 @@
       <div v-if="dealStatus === 4" class="text-right full-width">
         <v-btn small color="primary" depressed @click="review">评价</v-btn>
       </div>
-      <div v-if="dealStatus === 5" class="text-right full-width">
+      <div v-if="dealStatus >= 5" class="text-right full-width">
         <v-btn small color="primary" depressed @click="deleteOrder">删除订单</v-btn>
       </div>
     </v-footer>
