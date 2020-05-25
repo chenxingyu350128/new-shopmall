@@ -56,22 +56,7 @@ export default {
   },
   data: () => ({
     exCode: '',
-    history: [
-      {
-        couponId: 1,
-        couponMoney: 150, // 优惠金额
-        couponName: '腕表设备专用', // 名称
-        couponType: 2, // 优惠劵类型 1满减  2指定商品
-        endTime: '2020-05-15 17:02:13', // 优惠劵结束时间
-        goodsId: 1,
-        instructions: '在指定时间用哦，过期作废', // 使用说明
-        quota: 50, // 发放优惠券总数
-        satisfyMoney: 500, // 条件金额
-        startTime: '2020-04-22 17:02:07', // 优惠劵开始时间
-        takeCount: 0, // 已领取优惠劵数量
-        usedCount: 0 // 已使用优惠券数量
-      }
-    ]
+    history: []
   }),
   mounted () {
     this.getHistory()

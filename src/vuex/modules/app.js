@@ -7,13 +7,13 @@ const state = {
   userId: Util.getLocal('userId') || 0,
   userName: Util.getLocal('userName') || '',
   userType: Util.getLocal('userType') || 0,
-  tabbarIndex: Util.getLocal('tabbarIndex'),
+  tabbarIndex: Util.getLocal('tabbarIndex') || 0,
   origin: Util.getLocal('origin'),
   env: Util.getLocal('env'),
   loading: !!Util.getLocal('loading'),
   // 搜索
   searchList: Util.getLocal('searchList') || [],
-  current_key: Util.getLocal('current_key'),
+  current_key: Util.getLocal('current_key') || '',
   // 订单确认数据
   orderConfirmData: Util.getLocal('orderConfirmData'),
   cartIdsInOrder: Util.getLocal('cartIdsInOrder'),

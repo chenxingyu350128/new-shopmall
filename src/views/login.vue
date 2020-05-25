@@ -123,7 +123,7 @@ export default {
             token: token
           }
         }).then(res => {
-        if (res.data.code === '2000') {
+        if (res.data.success) {
           this.$store.commit('SET_EACH_USER_INFO', res.data.obj)
           this.$router.replace('/Index')
         }
@@ -204,7 +204,10 @@ export default {
         .then(res => {
           if (res.data.success) {
             if (origin === 'ORIGIN002') { // 微信客户端
-              location.href = res.data.obj.url
+              console.log(res.data.obj.url)
+              if (res.data.obj.url) {
+                location.href = res.data.obj.url
+              }
               return false
             }
 

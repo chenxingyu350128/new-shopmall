@@ -4,9 +4,9 @@ import router from '../router'
 import qs from 'qs'
 import vuetifyToast from 'vuetify-toast'
 const api = axios.create({
-  baseURL: 'http://mall.yinaf.com',
+  // baseURL: 'http://mall.yinaf.com',
   // baseURL: 'http://192.168.1.99:8080',
-  // baseURL: 'http://192.168.1.101:8080/mall',
+  baseURL: 'http://192.168.1.101:8080/mall',
   // baseURL: '/',
   timeout: 5000
 })

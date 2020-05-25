@@ -96,7 +96,7 @@
           {{item}}
           <v-icon
             v-if="i === tabList.length - 1"
-            @click.stop="priceToggle"
+            @click="priceToggle"
           >
             {{priceReverse ? 'mdi-chevron-down' : 'mdi-chevron-up'}}
           </v-icon>

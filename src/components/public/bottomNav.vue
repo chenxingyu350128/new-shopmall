@@ -60,6 +60,7 @@ export default {
     $route: {
       handler: function (val) {
         const routerPath = val.path
+        console.log(routerPath)
         this.active = this.tabbarRoutes.indexOf(routerPath) !== -1
       },
       // 深度观察监听

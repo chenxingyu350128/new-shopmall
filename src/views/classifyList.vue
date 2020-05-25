@@ -30,6 +30,7 @@
     <v-tabs
       v-model="cateIndex"
       height="30"
+      :grow="categoryList.length<=4"
       @change="ontabClick"
     >
       <v-tab

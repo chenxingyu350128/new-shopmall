@@ -42,7 +42,7 @@
         height="35"
         hide-slider
         optional
-        grow
+        :grow="cates.length<=4"
       >
         <v-tab
           v-for="(item,i) in cates"
