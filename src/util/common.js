@@ -1,18 +1,20 @@
-
 export default {
-  // 获取
-  getLocal (key) {
-    const res = JSON.stringify(localStorage.getItem(key))
-    console.log(key)
-    console.log(res)
-    console.log(typeof res)
-    return res ? JSON.parse(res) : ''
+  setLocal(key, val) {
+    localStorage.setItem(
+      key,
+      typeof val !== "string" ? JSON.stringify(val) : val
+    );
   },
-  // 设置用
-  setLocal (key, res) {
-    localStorage.setItem(key, JSON.stringify(res))
+  getLocal(key) {
+    const res = localStorage.getItem(key);
+    try {
+      const x = JSON.parse(res);
+      return x;
+    } catch (e) {
+      return res;
+    }
   },
-  clearLocal (key) {
-    localStorage.removeItem(key)
+  clearLocal(key) {
+    localStorage.removeItem(key);
   }
-}
+};

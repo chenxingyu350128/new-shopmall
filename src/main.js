@@ -7,21 +7,27 @@ import vuetify from './plugins/vuetify'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vant/lib/index.css'
-import { DatetimePicker, List, Area } from 'vant'
+import {
+  DatetimePicker,
+  List,
+  Toast,
+  Area
+} from 'vant'
 import http from '@/api/api.js' // http请求
 // 上线时注释掉
 // import VConsole from 'vconsole'
+// new VConsole()
 // if (process.env.NODE_ENV === 'production') {
-//   // eslint-disable-next-line no-new
-//   new VConsole()
 // }
 // eslint-disable-next-line no-new
 // new VConsole()
 
 Vue.prototype._ = _
 Vue.prototype.$http = http
-Vue.use(DatetimePicker).use(List).use(Area)
+Vue.use(DatetimePicker).use(List).use(Area).use(Toast)
 Vue.config.productionTip = false
+
+Vue.prototype.$toast = Toast
 
 router.afterEach((to, from, next) => {
   window.scrollTo(0, 0)

@@ -2,7 +2,9 @@ import axios from 'axios'
 import store from '@/vuex/store.js'
 import router from '../router'
 import qs from 'qs'
-import vuetifyToast from 'vuetify-toast'
+import {
+  Toast
+} from 'vant'
 const api = axios.create({
   baseURL: 'http://mall.yinaf.com',
   // baseURL: 'http://192.168.1.99:8080',
@@ -30,7 +32,7 @@ api.interceptors.request.use(
       '/goods/findGoodsRecommend',
       '/goods/findGoodsCoupon'
     ]
-    if (token && !tokenNotNeed.includes(url)) { // 请求不能带token
+    if (token && !tokenNotNeed.includes(url)) { // 排除请求不能带token
       config.headers.token = token
     }
     if (config.method === 'post') {
@@ -40,6 +42,7 @@ api.interceptors.request.use(
         config.data = qs.stringify(config.data)
       }
     }
+    console.log(config)
     // 在发送请求之前做些什么
     // 如果有token,添加到请求报文 后台会根据该报文返回status
     // if (store.state.app.token) {
@@ -64,7 +67,7 @@ api.interceptors.response.use(
 
     // 检测某种状态进行重定向
     if (!response.data.success) {
-      vuetifyToast.info(response.data.msg)
+      Toast.fail(response.data.msg)
       if (response.data.code === '401') {
         store.commit('XHR_401')
         if (router.history.current.name !== 'orderList' && localStorage.getItem('env') !== 'app') { // 防止订单页进商城
